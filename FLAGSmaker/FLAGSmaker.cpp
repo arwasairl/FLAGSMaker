@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <Windows.h>
+#include <vector>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -17,11 +18,26 @@ std::string ReplaceAll(std::string str, const std::string& from, const std::stri
     return str;
 }
 
+bool contains_case_insensitive(const std::string& haystack, const std::string& needle) {
+    auto it = std::search(
+        haystack.begin(), haystack.end(),
+        needle.begin(), needle.end(),
+        [](char ch1, char ch2) {
+            auto to_upper_ascii = [](char c) {
+                return (c >= 'a' && c <= 'z') ? c - 32 : c;
+                };
+            return to_upper_ascii(ch1) == to_upper_ascii(ch2);
+        }
+    );
+    return it != haystack.end();
+}
+
 int main()
 {
     string path;
-    cout << "\033[94mFLAGSmaker [Version 1.1]\n";
-    cout << "\033[94m(c) Microcuck and Adobo Corporation. 2024 No rights reserved.\n\n";
+    vector<string> skippedFilesDirectory = {};
+    cout << "\033[94mFLAGSmaker [Version 1.2]\n";
+    cout << "\033[94mProvided under MIT License.\n\n";
     cout << "\033[97mEnter texture directory: \n";
     getline(cin, path);
     std::filesystem::path filepath = path;
@@ -29,8 +45,7 @@ int main()
 
     if (filepathExists == false) {
         cout << "\033[91mInvalid directory!\n\n";
-        cout << "\033[97mPress any key to quit...";
-        getchar();
+        system("pause");
         return 1;
     }
     else {
@@ -43,9 +58,10 @@ int main()
             if (temp.find(".FLAGS") != std::string::npos) {
                 count2++;
                 string temp2 = ReplaceAll(temp, std::string(".png.FLAGS"), std::string(".png"));
-                cout << "\033[33mThe texture: " << temp2 << " already has a FLAG file!" << "\n";
+                skippedFilesDirectory.push_back(temp2);
+                //cout << "\033[33mThe texture: " << temp2 << " already has a FLAG file!" << "\n";
             }
-            else if (temp.find("COMP") != std::string::npos && temp.find(".FLAGS") == std::string::npos && fileExists == false) {
+            else if (contains_case_insensitive(temp, "COMP") && temp.find(".FLAGS") == std::string::npos && fileExists == false) {
                 string temp2 = ReplaceAll(temp, std::string(".png"), std::string(".png.FLAGS"));
                 ofstream outfile(temp2);
                 outfile << "_DEFAULT=QUALITYHIGH" << endl;
@@ -61,10 +77,18 @@ int main()
             cout << "\033[92mSuccesfully made " << count << " FLAG file(s)!\n";
         }
         if (count2 > 1) {
-            cout << "\033[93mSkipped " << count2 << " files.\n\n";
+            string answer;
+            cout << "\033[93mSkipped " << count2 << " files. Would you like to display the directories of the skipped files?\nY/N.\n";
+            cin >> answer;
+            if (answer == "Y")
+            {
+                for (int i = 0; i < skippedFilesDirectory.size(); i++)
+                {
+                    cout << skippedFilesDirectory[i] << "\n";
+                }
+            }
         }
-        cout << "\033[97mPress any key to quit...";
-        getchar();
+        system("pause");
         return 0;
     }
 }

@@ -1,1 +1,6 @@
 .vs
+Release
+Debug
+FLAGSmaker\Release
+FLAGSmaker\x64
+FLAGSmaker\Debug

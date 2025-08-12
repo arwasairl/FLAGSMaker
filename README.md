@@ -1,4 +1,4 @@
-# FLAGSmaker is a program that makes FLAGS files for Microsoft Flight Simulator.
+# Automated FLAG file generator for MSFS2020/2024.
 
 Limitations:
 1. Files supported are ONLY PNGs and COMP textures. ALBD, NORM, and other texture file types like TGA, DDS, EXR, etc. are not supported

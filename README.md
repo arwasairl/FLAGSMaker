@@ -6,6 +6,6 @@ Limitations:
 3. The textures within your texture directory MUST have a suffix "COMP" (with all caps). The program will not recognize any other name or lowercased texture file names.
 
 Version History<br/>
-[2025-08-11] 1.2 - Removed copyright information, added support for lowercased texture filenames.
-[2024-09-08] 1.1 - Fixed bug where no feedback was generated for FLAG files lower down the file hierarchy
+[2025-08-11] 1.2 - Removed copyright information, added support for lowercased texture filenames.<br/>
+[2024-09-08] 1.1 - Fixed bug where no feedback was generated for FLAG files lower down the file hierarchy<br/>
 [2024-09-08] 1.0 - Initial release
